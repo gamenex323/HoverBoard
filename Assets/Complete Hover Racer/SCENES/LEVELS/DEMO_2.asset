@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73678af9231d23844900caba3d25607c, type: 3}
+  m_Name: DEMO_2
+  m_EditorClassIdentifier: 
+  scene: {fileID: 102900000, guid: 1841662ae6416524db7c0df7018f5490, type: 3}
+  sceneNameForLoad: Demo 2
+  playMusic: track_01
+  selectedMusic: 1
+  clipNames:
+  - menu
+  - track_01
+  unlocked: 1
+  starsToUnlock: 0
+  laps: 3
+  sideWallRebound: 1
+  useLocalSetup: 0
+  raceSpeed: 1
+  HoverMode: 0
+  hoverHeight: 5
+  hoverFactor: 0.1
+  bendFactor: 0.2
+  fallGravity: 200
+  PIDHoverForce: 300
+  hoverGravity: 20
+  displayName: space
+  displayImage: {fileID: 21300000, guid: 4194817f051076447bf7e937352dc79b, type: 3}
+  positionsReward: 100
+  lapRecordReward: 100
+  cheatSpeed: 0.232
+  cheatDuration: 10
+  AIs:
+  - {fileID: 1756713997320336, guid: 970c7d6d1b7fa7845a977cc8a3330d99, type: 3}
+  - {fileID: 1756713997320336, guid: 96f409ba44381114f860292d8e439bc2, type: 3}

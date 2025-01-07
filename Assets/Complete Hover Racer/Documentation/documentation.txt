@@ -1,0 +1,245 @@
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+======= CHR - COMPLETE HOVER RACER == v.2.1 ========= HOGLET INTERACTIVE 2024 =======
+
+
+
+VIDEO TUTORIALS: 
+
+	New level
+	https://youtu.be/XlPnGlWGB-k
+	
+	New ship
+	https://youtu.be/kRd2WzMHAZU
+	
+	Collider setup
+	https://youtu.be/jplhuY089E4
+	
+	Waypoints generator
+	https://youtu.be/hwcUe3NpNyE
+	
+	Ammo pad
+	https://youtu.be/X9nyINMCKl0
+	
+	Turbo pad
+	https://youtu.be/B4ylzVwHh54
+
+
+
+DEVELOPER CONTACT:
+	suni.games.europe@gmail.com
+	https://www.instagram.com/hoglet_interactive/
+	https://twitter.com/Suni_games
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+------------------------------ DOCUMENTATION & HELP ----------------------------------
+
+- GAME CONTROLLS:
+
+	- Input Actions map can be set in Input Actions / GameInputActions
+	- The actual setting is workin with Gamepad (tested on Xbox controller) and with Keyboard controls as well.
+
+
+- MOBILE CONTROLS:
+	
+	- When Unity Built type is set to Android or IOS, JoyPad is automatycally added to the scene.
+	To customize JoyPad UI go to "JoyPad" folder and open "JoyPad Dual" prefab.
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- PLAY FROM EDITOR
+	To start game in Unity editor, "Boot" scene needs to be loaded first.
+	You can go to SCENES / and open Boot scene or use the "Scene autoload"
+	
+	Scene autoload - located in Unity menu "EDIT". Locate it and in Scene autoload submenu, 
+	use the "Select master scene" to locete your boot scene.
+	With "Load master on play" enabled, this will allways load the selected master scene,
+	so You dont need to open Boot scene to run the game.
+	You can use this script for any of your projects, located in Editor / SceneAutoLoader.cs
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- LAYER & COLLISION MATRIX
+	In this project, layer "8" is set as "Racer" layer, player and AI racers needs to be on this layer.
+	Also right Collision matrix is need to be set right to make game full functional.
+
+	Check collision matrix, if layers are not set automaticaly, the right Project Settings are provided in "Settings / ProjectSettings.zip" , 
+	extract and overwrite default settings if necessary!
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- UI
+
+To redesign menu and UI open "Menu" scene, located in "SCENES" folder.
+Here you can find canvases definig player and level selection.
+To design level selection panel and currency icons, you need to change prefabs located
+in "UI/MENU/Prefabs"
+
+- Design the "Level Panel" : Enable "LEVEL SELECT" canvas in Menu scene, 
+open it to "LEVEL SELECT / SCROLL PANEL / CONTENT". Drag "Level Panel"
+prefab to "CONTENT" panel to view it correctly. Redesign it and apply changes to prefab.
+Delete it or simply reload the scene without saving it. 
+
+Other UI such as HUD, Pause and End menus are located in "RACE MANAGER" prefab
+Go to folder "MANAGERS" and open "RACE MANAGER" prefab to design it for your needs.
+
+
+	   	  
+//////////////////////////////////////////////////////////////////////////////////////
+- MANAGERS
+
+In "MANAGERS" folder you find prefabs with GameManager and RaceManager scripts.
+
+GAME MANAGER is added to the "Boot" scene as it has a DontDestroyOnLoad Singleton pattern.
+All basic game settings, player objects and level managements are set on GameManager.
+Also here you can set hovering parameters.
+"Build type info" is auto detected, depending on actual Build settings.
+
+- Hover mode defines how ship floats over the road.
+	PID mode use AddForce calculation, the ship in that case is moved fully by forces.
+	RigidBody MovePosition hovers the ship by defining hover position and moves the Rigidbody.
+
+-Global Race Speed defines the global multiply value for racing speed.
+
+-Global Player Turn defines the global ship turn value.
+
+- Use Individual Turn: if enabled, playerobject turn values will override the global player turn value.
+	(also turn-slider and upgrade button will be available in ship select menu, you can manualy disable turn upgrade gameobject
+	in Menu scene / PLAYER SELECT / UPGRADE PANEL, to prevent upgrading individual ship turn values)
+
+
+
+RaceManager added for each levels as a singleton, contains setting like road layer, HUD elements, Camera prefab reference.
+RaceManager prefab also contains a Bullet pool component, where you can set pullet prefab.
+You can set individual bullets for each levels if you want, for example one level can use green bullet while other red.
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- IAP
+	In "Menu" scene on "PLAYER SELECT" object is a MenuManager.cs script attached.
+	This contains public function "AddMoney" ready for succesfull in app purchase
+	calling, with parameter of purchased gem ammount. 
+	For demonstration IAP buttons now calling "AddMoney", delete those click events when 
+	intergating real IAP. After using demo purchases, you can reset gem currency in
+	GAME MANAGER prefab by clicking "DELETE MANAGER SAVEDATA".
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- SAVE & LOAD
+	This asset actually use playerprefs to save/load data in GameManager and scriptable objects.
+	You can easy locate and change those functions to implement own saving system if needed.
+
+	!!!!!!!!!
+		When manipulating with level objects, player objects or money currency in GameManager, 
+		its a good practice to delete saved data. Otherwise saved data can rewrite new objects settings.
+		To do that select GAME MANAGER prefab in projects or hierarchy and use provided 3 buttons:
+		"DELETE MANAGER SAVEDATA", "DELETE PLAYERS SAVEDATA", "DELETE LEVELS SAVEDATA"	
+	!!!!!!!!!
+
+		(You can also use Clear PlayerPrefs from Unity edit menu, that will delete all 3 types of saved data)
+
+
+			   		 
+//////////////////////////////////////////////////////////////////////////////////////
+- PLAYERS
+
+Player are defined by scriptable objects. Player objects needs to be added to GameManager to handle them in game.
+Human controlled players are located in "PLAYERS/HUMAN" folder. You can create new player with right mouse click /Create/Player,
+or simple duplicate one of the player scriptable objects.
+Select new player object and set it up in Inspector window.
+	- Add player name
+	- price, for a case if player is not unlocked
+	- Set different racing values and upgrade prices
+	- Set prefab for selection menu and for gameplay
+
+For creating ship from own model, examine "Ship_A" and "Ship_A_Game" prefabs.
+"Ship_A" is a nested into "Ship_A_Game" and "AI_ship A", so changing "Ship_A" mesh filter will effect gameplay prefab also.
+If you like to use mesh collider instead of capsule collider, switch Collider Setup in "PlayesShip" component of gameplay ship prefab
+and set mesh collider in BODY/Ship.
+
+Creating new AI ship is very similar, examine one of the AI ships located in "PLAYERS/AI" folder.
+
+Simpliest practice to create new Human or AI ship to duplicate prefabs and changing things on/inside the prefab according your needs.
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- CAMERA
+	In Camera folder you find the RacerCamera prefab. RacerCamera script has folloving properties:
+	- Camera Tilt value. With Camera Tilt you can set how the camera will follow Ships tilt when turning.
+	- Normal FOV defines the focal view of normal race speed
+	- Turbo FOV defines the focal viev when player get turbo boost. This value should be bigger than Normal FOV.
+	- Camera Positions is a list of transforms where you van switch the gamera during gameplay, you can add, remove or adjust
+	  positions when open RacerCamera prefab.
+
+	Race Manager will automatically add the camera prefab set in managers "Camera Prefab" field.
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- LEVELS
+
+Levels are defined by scriptable objects. Level objects needs to be added to GameManager to handle them in game.
+Level scenes and objects are located in "Scenes/LEVELS", go there and select "DEMO_1" for examine it in Inspector.
+As you see level specifications are hendled here. Just like wich scene should be loaded, name in menu, icon in menu,
+Locked / ulock state, racing rewards.
+For addign a scene just simple drag the scene from projects to Level object "Scene" property.
+Also you need to ad AI ships into AI Prefab ASs array to spawnthem in game to this level.
+AI CHEATS ON START - means an extra speed and duration for AI ships at the begining of the race to make game more interesting.
+
+	MUSIC: On Level object at the bottom you find the "PLAY MUSIC" dropdown popup.
+	Music mp3 files are located in "Resources/music" folder. Add here new files.
+	After you changed music files in "Resources/music" folder, you need to refresh playlist!
+	To do that click "REFRESH PLAYLIST" button located on bottom of GAME MANAGER prefab.
+	Now you can select newly added music on level object to automatically play them in game.
+	If "Resources/music" folder contains music named "menu", it will be played during menu scene.
+
+	SFX - To play own sound effects in game simple overvrite existing in "Resources/sfx" or add new files.
+			to play them from script, call "AudioManager.Instance.PlaySFX ("filename goes here");"
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+- CREATING NEW LEVEL
+	Open one of the demo level scenes provided. As you see there are essential gameobjects for gameplay in Hierarchy,
+	just like Race Manager, Loader, Race grid, waypoints.
+	Best practice to start create new racing scene is to duplicate one of the scenes provided, and change/re-arrange their content.
+
+
+	Colliders:
+	Every race track needs to have ROAD COLLIDERS and WALL COLLIDERS.
+	Modeling those meshes with structure as you see in DEMO 1 or DEMO 2 FBX files makes the collider creation easy.
+	Wall Colliders needs to be on TransparentFX layer, andtheir parent needs to have kinematic rigidbody and "SideWallCollider" component.
+
+	Use provided tool to quick collider setup.
+	Drag road collider and wall collider models to the scene and open Tools/CHR/Set Track Colliders.
+	"Prepare Collider Group" window should open, drag from hierarchy the colliders for coresponding fields,
+	add a physic material, then hit "SET COLLIDERS" button.
+	The Road and Wall collider meshes now should be ready in the scene, meaning they all have only collider component without mesh renderer.
+
+
+	WayPoints:
+	You can adjust waypoint positions manualy, waypoints are based on waypoint system from Unity Standard Assets.
+	However CHR package contains tool to help create WayPoint system. When you modeling a race track model, try to separate track for small parts,
+	each of those parts will got a waypoints. a 100 meter lenght parts will do the job.
+	Add race track parts to the scene, as you see the struture "Full Track Mesh". Go to menu "Tools/CHR/Create Waypoint Circuit"
+	The Create Waypoint Tool opens, drag the part what you prefer to be a start/finish part into "ADD START PIECE" field.
+	Hit "GENERATE" or "REVERSE GENERATE" depending on which racing way you prefer.
+	The new "WAYPOINTS" object shows up in Hierarch, select it and check the scene ih racing line fits the track, fix positions if needed.
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////

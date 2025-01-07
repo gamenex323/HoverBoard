@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e166042f7558c0a4d97b89ff1090a321, type: 3}
+  m_Name: Ship_3
+  m_EditorClassIdentifier: 
+  playerName: Wolf
+  price: 700
+  unlocked: 0
+  turnUpgradeSteps: 4
+  turn: 300
+  turnMax: 400
+  turnMin: 300
+  turnSliderMin: 250
+  turnSliderMax: 500
+  drift: 0.5
+  driftMax: 0.5
+  driftMin: 0
+  driftSliderMin: 0
+  driftSliderMax: 0.5
+  accelUpgradeSteps: 5
+  acceleration: 0.007999999
+  accelerationMax: 0.014
+  accelerationMin: 0.005
+  accelerationSliderMin: 0
+  accelerationSliderMax: 0.02
+  thrustUpgradeSteps: 5
+  normalThrust: 1700
+  normalThrustMax: 2000
+  normalThrustMin: 1500
+  thrustSliderMin: 1400
+  thrustSliderMax: 2000
+  turboUpgradeSteps: 5
+  turboTime: 1
+  turboTimeMax: 2.8000002
+  turboTimeMin: 1
+  turboSliderMin: 0
+  turboSliderMax: 4
+  turnPrice: 700
+  turnPriceRaise: 200
+  accelerationPrice: 400
+  accelerationPriceRaise: 100
+  normalThrustPrice: 500
+  normalThrustPriceRaise: 100
+  turboTimePrice: 200
+  turboTimePriceRaise: 50
+  menuPrefab: {fileID: 8753840740864572403, guid: 4985c49635e86074d9ae262fa99be311,
+    type: 3}
+  gameplayPrefab: {fileID: 4328913805794835904, guid: ddb7c164fa39b8641afb734d3e11c6f9,
+    type: 3}

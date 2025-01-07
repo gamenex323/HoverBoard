@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e166042f7558c0a4d97b89ff1090a321, type: 3}
+  m_Name: Ship_1
+  m_EditorClassIdentifier: 
+  playerName: Thunder
+  price: 0
+  unlocked: 1
+  turnUpgradeSteps: 4
+  turn: 400
+  turnMax: 500
+  turnMin: 300
+  turnSliderMin: 250
+  turnSliderMax: 500
+  drift: 0.3
+  driftMax: 0.5
+  driftMin: 0
+  driftSliderMin: 0
+  driftSliderMax: 0.5
+  accelUpgradeSteps: 5
+  acceleration: 0.011
+  accelerationMax: 0.02
+  accelerationMin: 0.005
+  accelerationSliderMin: 0
+  accelerationSliderMax: 0.02
+  thrustUpgradeSteps: 4
+  normalThrust: 1500
+  normalThrustMax: 2000
+  normalThrustMin: 1500
+  thrustSliderMin: 1375
+  thrustSliderMax: 2000
+  turboUpgradeSteps: 5
+  turboTime: 2.8000002
+  turboTimeMax: 4
+  turboTimeMin: 1
+  turboSliderMin: 0
+  turboSliderMax: 4
+  turnPrice: 900
+  turnPriceRaise: 200
+  accelerationPrice: 400
+  accelerationPriceRaise: 100
+  normalThrustPrice: 500
+  normalThrustPriceRaise: 100
+  turboTimePrice: 200
+  turboTimePriceRaise: 50
+  menuPrefab: {fileID: 378424373966473675, guid: f384e979ab3e0f8419839a065582aae7,
+    type: 3}
+  gameplayPrefab: {fileID: 1728421940591650, guid: e4b0d270c2b2e694eb8a60a12f865073,
+    type: 3}

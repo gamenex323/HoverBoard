@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e166042f7558c0a4d97b89ff1090a321, type: 3}
+  m_Name: Ship_2
+  m_EditorClassIdentifier: 
+  playerName: Mystral
+  price: 0
+  unlocked: 1
+  turnUpgradeSteps: 4
+  turn: 400
+  turnMax: 450
+  turnMin: 300
+  turnSliderMin: 250
+  turnSliderMax: 500
+  drift: 0.1
+  driftMax: 0.3
+  driftMin: 0
+  driftSliderMin: 0
+  driftSliderMax: 0.5
+  accelUpgradeSteps: 5
+  acceleration: 0.011
+  accelerationMax: 0.02
+  accelerationMin: 0.005
+  accelerationSliderMin: 0
+  accelerationSliderMax: 0.02
+  thrustUpgradeSteps: 5
+  normalThrust: 1800
+  normalThrustMax: 2000
+  normalThrustMin: 1500
+  thrustSliderMin: 1400
+  thrustSliderMax: 2000
+  turboUpgradeSteps: 5
+  turboTime: 2.8000002
+  turboTimeMax: 4
+  turboTimeMin: 1
+  turboSliderMin: 0
+  turboSliderMax: 4
+  turnPrice: 300
+  turnPriceRaise: 200
+  accelerationPrice: 400
+  accelerationPriceRaise: 100
+  normalThrustPrice: 500
+  normalThrustPriceRaise: 100
+  turboTimePrice: 200
+  turboTimePriceRaise: 50
+  menuPrefab: {fileID: 9088210010107555762, guid: 2ef8d9bbe6cc2e34986d5d1e744377a7,
+    type: 3}
+  gameplayPrefab: {fileID: 6450957185595955035, guid: 88ee9c686f27c38409b91549e309832a,
+    type: 3}
