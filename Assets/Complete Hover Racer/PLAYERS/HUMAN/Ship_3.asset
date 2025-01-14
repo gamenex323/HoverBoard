@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ship_3
   m_EditorClassIdentifier: 
   playerName: Wolf
-  price: 700
+  price: 0
   unlocked: 0
   turnUpgradeSteps: 4
   turn: 300

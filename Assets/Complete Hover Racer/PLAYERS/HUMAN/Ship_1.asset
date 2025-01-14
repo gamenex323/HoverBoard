@@ -33,7 +33,7 @@ MonoBehaviour:
   accelerationSliderMin: 0
   accelerationSliderMax: 0.02
   thrustUpgradeSteps: 4
-  normalThrust: 1500
+  normalThrust: 1625
   normalThrustMax: 2000
   normalThrustMin: 1500
   thrustSliderMin: 1375
@@ -48,7 +48,7 @@ MonoBehaviour:
   turnPriceRaise: 200
   accelerationPrice: 400
   accelerationPriceRaise: 100
-  normalThrustPrice: 500
+  normalThrustPrice: 600
   normalThrustPriceRaise: 100
   turboTimePrice: 200
   turboTimePriceRaise: 50
