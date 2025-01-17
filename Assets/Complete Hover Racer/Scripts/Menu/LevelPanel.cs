@@ -50,7 +50,11 @@ public class LevelPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
 	public void GoTolevel () {
 		GameManager.Instance.selectedLevel = levelSO;
-		LoadScene.Instance.LoadByName (levelSO.sceneNameForLoad);
+		PhotonAuth.Instance.ScenceName = levelSO.sceneNameForLoad;
+		//LoadScene.Instance.LoadByName (levelSO.sceneNameForLoad);
+		PhotonAuth.Instance.JoinOrCreateRoom();
+		if (UIManager.Instance)
+			UIManager.Instance.CreateRoomPanel.SetActive(true);
 	}
 
 
