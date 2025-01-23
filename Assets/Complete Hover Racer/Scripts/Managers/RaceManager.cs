@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Photon.Pun;
 
-public class RaceManager : Singleton<RaceManager> {
-
+public class RaceManager : MonoBehaviourPun {
+	public static RaceManager Instance;
 	public LayerMask roadLayer;
 
 	public float startDelay = 1f;
@@ -65,8 +66,12 @@ public class RaceManager : Singleton<RaceManager> {
 	private List<RaceGridBox> gridPlaces = new List<RaceGridBox> ();
 
 
-	public override void Awake () {
-		base.Awake ();
+	public void Awake () {
+		if(Instance == null)
+        {
+			Instance = this;
+        }
+		//base.Awake ();
 		// Get Level object
 		levelSO = GameManager.Instance.selectedLevel;
 	}
@@ -99,9 +104,10 @@ public class RaceManager : Singleton<RaceManager> {
 		gridPlaces.Sort (GridSort);
 
 		// ADD PLAYER
+		int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
 		PlayerObject po = GameManager.Instance.GetSelectedPlayer ();
-		Vector3 placePos = gridPlaces[0].transform.position + (gridPlaces[0].transform.up * GameManager.Instance.hoverHeight);
-		player = Instantiate (po.gameplayPrefab, placePos, gridPlaces[0].transform.rotation);
+		Vector3 placePos = gridPlaces[localPlayerId - 1].transform.position + (gridPlaces[localPlayerId - 1].transform.up * GameManager.Instance.hoverHeight);
+		player = PhotonNetwork.Instantiate(po.gameplayPrefab.name, placePos, gridPlaces[localPlayerId - 1].transform.rotation);
 		playerTracker = player.GetComponent<DistanceTracker> ();
 		playerTracker.circuit = circuit;
 		playerBody = player.GetComponent<PlayerShip> ().shipBody;
@@ -109,7 +115,7 @@ public class RaceManager : Singleton<RaceManager> {
 		aiTrackers.Add (playerTracker); // POSITIONFIX - we add player tracket to distance trackers list
 
 		// ADD CAMERA & JOYPAD ON MOBILE BUILD
-		raceCam = Instantiate (cameraPrefab, player.transform.position, player.transform.rotation).GetComponent<RacerCamera> ();
+		raceCam = PhotonNetwork.Instantiate (cameraPrefab.name, player.transform.position, player.transform.rotation).GetComponent<RacerCamera> ();
 		raceCam.InitCamera (player.transform, playerBody);
 		if (GameManager.Instance.BuildType == Build.MOBILE) mobileControls = Instantiate (joyPad);
 
@@ -178,7 +184,10 @@ public class RaceManager : Singleton<RaceManager> {
 
 	}
 
+	public void AddPlayer()
+    {
 
+    }
 
 	public void OnPause () {
 		if (!pausePanel.activeInHierarchy)

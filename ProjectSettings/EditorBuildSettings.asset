@@ -23,4 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Complete Hover Racer/SCENES/LEVELS/Demo Barrel.unity
     guid: 65b9048ff2648b24c9c6c38e5db0d555
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 1a1f98bcad4d1734c9d592df4ea2ec0e,
+      type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5b13e81d3e8371d4d8b7255d11f88c2b,
+      type: 3}

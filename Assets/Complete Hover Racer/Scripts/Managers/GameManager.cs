@@ -46,15 +46,14 @@ public class GameManager : SingletonDontDestroy<GameManager> {
 	[HideInInspector] public Level selectedLevel;
 
 
-/*	private void OnValidate () {
-#if UNITY_ANDROID || UNITY_IOS
-		BuildType = Build.MOBILE;
-		useAutoThrust = true;
-#else
-		BuildType = Build.DESKTOP;
-#endif
-	}*/
-
+	/*	private void OnValidate () {
+	#if UNITY_ANDROID || UNITY_IOS
+			BuildType = Build.MOBILE;
+			useAutoThrust = true;
+	#else
+			BuildType = Build.DESKTOP;
+	#endif
+		}*/
 
 	void Start () {
 #if UNITY_ANDROID || UNITY_IOS

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine.PlayerLoop;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
-public class RacerCamera : MonoBehaviour {
+public class RacerCamera : MonoBehaviourPun {
 
 	[Range (0, 1f)] public float CameraTilt = 0.4f;
 	[Space(5)]
@@ -39,11 +40,19 @@ public class RacerCamera : MonoBehaviour {
 	public void InitCamera (Transform playerTr, Transform playerBodyTr) {
 		player = playerTr;
 		playerBody = playerBodyTr;
-
-		if (followLoop == null) {
-			followLoop = StartFollow ();
-			StartCoroutine (followLoop);
+		if (photonView.IsMine)
+		{
+			if (followLoop == null)
+			{
+				followLoop = StartFollow();
+				StartCoroutine(followLoop);
+			}
+			cam.gameObject.SetActive(true);
 		}
+		else
+        {
+			cam.gameObject.SetActive(false);
+        }
 	}
 
 

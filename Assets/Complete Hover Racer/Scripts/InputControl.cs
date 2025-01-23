@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
 [RequireComponent (typeof (PlayerShip))]
-public class InputControl : MonoBehaviour {
+public class InputControl : MonoBehaviourPunCallbacks
+{
 
 	public PlayerShip pShip;
 	public Cannon pCannon;
@@ -12,12 +14,22 @@ public class InputControl : MonoBehaviour {
 	private const float keyAnalogTime = 0.33f;
 	private IEnumerator SteerKeyCor, ThrustKeyCor, BrakeKeyCor;
 
-
+	 private void Start()
+    {
+        // Disable controls if this is not the local player
+        if (!photonView.IsMine)
+        {
+            enabled = false;
+            return;
+        }
+    }
 	public void OnSteer (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return; // Only process input for local player
 		pShip.newInputTurn = value.ReadValue<Vector2> ().x;
 	}
 
 	public void OnSteerKey (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) {
 			if (SteerKeyCor != null) StopCoroutine (SteerKeyCor);
 			SteerKeyCor = SmoothSteerKey (value.ReadValue<Vector2> ().x);
@@ -41,9 +53,14 @@ public class InputControl : MonoBehaviour {
 
 
 
-	public void OnThrust (InputAction.CallbackContext value) => pShip.newInputThrust = value.ReadValue<float> ();
+	public void OnThrust(InputAction.CallbackContext value)
+	{
+		if (photonView.IsMine)
+			pShip.newInputThrust = value.ReadValue<float>();
+	}
 
 	public void OnThrustKey (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) {
 			if (ThrustKeyCor != null) StopCoroutine (ThrustKeyCor);
 			ThrustKeyCor = SmoothThrustKey (1);
@@ -66,9 +83,14 @@ public class InputControl : MonoBehaviour {
 
 
 
-	public void OnBrake (InputAction.CallbackContext value) => pShip.newInputBrake = value.ReadValue<float> ();
+	public void OnBrake(InputAction.CallbackContext value) 
+	{
+		if (photonView.IsMine)
+			pShip.newInputBrake = value.ReadValue<float>(); 
+	}
 
 	public void OnBrakeKey (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) {
 			if (BrakeKeyCor != null) StopCoroutine (BrakeKeyCor);
 			BrakeKeyCor = SmoothBrakeKey (1);
@@ -93,6 +115,7 @@ public class InputControl : MonoBehaviour {
 
 
 	public void OnFire (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) {
 			pCannon.newInputFire = true;
 			pMissile.newInputFire = true;
@@ -106,12 +129,14 @@ public class InputControl : MonoBehaviour {
 
 
 	public void OnCameraSwitch (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) RaceManager.Instance.raceCam.CameraSwitch ();
 	}
 
 
 
 	public void OnPause (InputAction.CallbackContext value) {
+		if (!photonView.IsMine) return;
 		if (value.started) RaceManager.Instance.OnPause ();
 	}
 

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent (typeof (Collider), typeof (Rigidbody))]
-public class PlayerShip : MonoBehaviour, IShip {
+public class PlayerShip : MonoBehaviourPun, IShip {
 	// Setup
 	[Header ("Collider Setup:")]
 	[SerializeField] private bool usePrimitiveCollider = true;
@@ -98,12 +99,20 @@ public class PlayerShip : MonoBehaviour, IShip {
 
 
 	void OnEnable () {
-		RaceManager.OnRaceStart += StartRace;
-		RaceManager.OnRaceOver += AutoPilot;
+		if (photonView.IsMine)
+		{
+			RaceManager.OnRaceStart += StartRace;
+			RaceManager.OnRaceOver += AutoPilot;
+		}
+		//RaceManager.OnRaceStart += StartRace;
+		//RaceManager.OnRaceOver += AutoPilot;
 	}
 	void OnDisable () {
-		RaceManager.OnRaceStart -= StartRace;
-		RaceManager.OnRaceOver -= AutoPilot;
+		if (photonView.IsMine)
+		{
+			RaceManager.OnRaceStart -= StartRace;
+			RaceManager.OnRaceOver -= AutoPilot;
+		}
 	}
 
 	private void StartRace () => inRace = true;
@@ -157,6 +166,7 @@ public class PlayerShip : MonoBehaviour, IShip {
 
 
 	void Update () {
+		if (!photonView.IsMine) return;
 		// Engine Sound & VFX
 		sfxLerp = thrustForce / turboThrust;
 		engineAudio.volume = Mathf.Lerp (minVolume, maxVolume, sfxLerp);
@@ -166,6 +176,7 @@ public class PlayerShip : MonoBehaviour, IShip {
 
 
 	void FixedUpdate () {
+		if (!photonView.IsMine) return;
 		// HOVERING
 		if (Physics.Raycast (transform.position, -transform.up, out RaycastHit hit, hoverMax, roadLayer)) {
 			BendToRoad (hit.normal);
@@ -282,10 +293,9 @@ public class PlayerShip : MonoBehaviour, IShip {
 
 	// TURBO Operations
 	public void Turbo_On () {
-		thrust = turboThrust;
-		accel = turboAcceleration;
-		CancelInvoke ("Turbo_Off");
-		Invoke ("Turbo_Off", turboTime);
+		if (!photonView.IsMine) return;
+		photonView.RPC(nameof(TurboSync), RpcTarget.All);
+		
 
 		if (rCam != null) {
 			rCam.SetTurboFOV ();
@@ -295,7 +305,14 @@ public class PlayerShip : MonoBehaviour, IShip {
 		}
 
 	}
-
+	[PunRPC]
+	private void TurboSync()
+	{
+		thrust = turboThrust;
+		accel = turboAcceleration;
+		CancelInvoke(nameof(Turbo_Off));
+		Invoke(nameof(Turbo_Off), turboTime);
+	}
 	public void Turbo_Off () {
 		thrust = normalThrust;
 		accel = acceleration;
@@ -303,15 +320,21 @@ public class PlayerShip : MonoBehaviour, IShip {
 	}
 
 	public void WallHit (Vector3 hitNormal, float reduceThrust) {
+		if (!photonView.IsMine) return;
+		photonView.RPC(nameof(WallHitSync), RpcTarget.All, hitNormal, reduceThrust);
+	}
+	[PunRPC]
+	private void WallHitSync(Vector3 hitNormal, float reduceThrust)
+	{
 		thrustForce *= reduceThrust;
 
 		if (!rebound) return;
 
 		// Bounce from wall
-		rb.AddForce (5 * -hitNormal, ForceMode.VelocityChange);
+		rb.AddForce(5 * -hitNormal, ForceMode.VelocityChange);
 		// Turn away from wall
-		if (Vector3.Dot (hitNormal, rb.velocity.normalized) > 0)
-			rb.MoveRotation (Quaternion.Slerp (rb.rotation, Quaternion.LookRotation (-hitNormal, transform.up), 0.01f));
+		if (Vector3.Dot(hitNormal, rb.velocity.normalized) > 0)
+			rb.MoveRotation(Quaternion.Slerp(rb.rotation, Quaternion.LookRotation(-hitNormal, transform.up), 0.01f));
 	}
 
 	public void CannonHit () {
@@ -319,6 +342,12 @@ public class PlayerShip : MonoBehaviour, IShip {
 	}
 
 	public void MissileHit () {
+		if (!photonView.IsMine) return;
+		photonView.RPC(nameof(MissileHitSync), RpcTarget.All);
+	}
+	[PunRPC]
+	private void MissileHitSync()
+	{
 		thrustForce = 0;
 		rb.velocity = Vector3.zero;
 	}
