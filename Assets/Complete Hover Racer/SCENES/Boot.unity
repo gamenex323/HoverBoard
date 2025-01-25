@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -519,9 +518,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
         type: 3}
+      propertyPath: levels.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
+        type: 3}
       propertyPath: players.Array.size
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
+        type: 3}
+      propertyPath: levels.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: c09084745df91694a95ced93255e5ea4,
+        type: 2}
+    - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
+        type: 3}
+      propertyPath: levels.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5796c30107dac7b4ebb943920f26f1ab,
+        type: 2}
+    - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
+        type: 3}
+      propertyPath: levels.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 85e133b1e420b094f87e1881e7f1a8c7,
+        type: 2}
+    - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
+        type: 3}
+      propertyPath: levels.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0d07dc84c1e9ee14fb34b6c26fe0da78,
+        type: 2}
     - target: {fileID: 7372370736518973393, guid: a0c857b0e458e204fa8cdb2504dc65c2,
         type: 3}
       propertyPath: players.Array.data[3]

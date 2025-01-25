@@ -6,6 +6,7 @@ public class AmmoPad : BasePad {
 
 	void OnTriggerEnter (Collider other) {
 		if (GameManager.Instance.GameState != State.PLAY) return;
+		Debug.Log("Player: " , other.gameObject);
 		other.GetComponentInParent<ICannon> ()?.Reload (Ammo);
 	}
 

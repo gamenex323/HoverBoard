@@ -49,9 +49,52 @@ public class MenuManager : MonoBehaviour {
 		UpdateMoneyInfo ();
 		AudioManager.Instance.PlaySFX ("upgrade");
 	}
+    public void AddAmmo(int extraAmmo)
+    {
+		GlobalData.Ammo += extraAmmo;
+        AudioManager.Instance.PlaySFX("upgrade");
+    }    
+
+	public void BuyAmmo(int buyID)
+	{
+		switch (buyID)
+		{
+			case 0:
+				if (PurchaseWithMoney(200))
+				{
+                    AddAmmo(1000);
+                }
+                break;
+            case 1:
+                if (PurchaseWithMoney(300))
+                {
+                    AddAmmo(2000);
+                }
+                break;
+            case 2:
+                if (PurchaseWithMoney(400))
+                {
+                    AddAmmo(3000);
+                }
+                break;
+        }
+        UpdateMoneyInfo();
+    }
+	public bool PurchaseWithMoney(int money)
+    {
+		if (GameManager.Instance.Money >= money)
+		{
+            GameManager.Instance.RemoveMoney (money);
+			return true;
+        }
+		else
+		{
+			return false;
+		}
+    }
 
 
-	public void QuitGame () {
+    public void QuitGame () {
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 #else

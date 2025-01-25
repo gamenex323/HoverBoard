@@ -28,7 +28,9 @@ public class Cannon : MonoBehaviour, ICannon {
 
 
 	private void Start () {
-		rb = GetComponent<Rigidbody> ();
+		maxAmmo = 10000000;
+        GetComponentInParent<ICannon>()?.Reload(GlobalData.Ammo);
+        rb = GetComponent<Rigidbody> ();
 		sfx = firePoint.GetComponent<AudioSource> ();
 		clip = sfx.clip;
 		gunParticles = firePoint.GetComponent<ParticleSystem> ();
