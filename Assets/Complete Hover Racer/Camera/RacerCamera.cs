@@ -38,10 +38,11 @@ public class RacerCamera : MonoBehaviourPun {
 
 
 	public void InitCamera (Transform playerTr, Transform playerBodyTr) {
-		player = playerTr;
-		playerBody = playerBodyTr;
 		if (photonView.IsMine)
 		{
+			player = playerTr;
+			playerBody = playerBodyTr;
+		
 			if (followLoop == null)
 			{
 				followLoop = StartFollow();

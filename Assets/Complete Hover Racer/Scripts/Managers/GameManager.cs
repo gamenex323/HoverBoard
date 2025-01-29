@@ -97,7 +97,10 @@ public class GameManager : SingletonDontDestroy<GameManager>
         }
         return 0;
     }
-
+    public string GetSelectedPlayerName()
+    {
+        return PlayerPrefs.GetString("selected", "");
+    }
     public PlayerObject GetSelectedPlayer()
     {
         string selected = PlayerPrefs.GetString("selected", "");
@@ -106,7 +109,14 @@ public class GameManager : SingletonDontDestroy<GameManager>
         else
             return players[0];
     }
-
+    public PlayerObject GetSelectedPlayer(string name)
+    {
+        //string selected = PlayerPrefs.GetString("selected", "");
+        if (name != "")
+            return players[GetPlayerIndex(name)];
+        else
+            return players[0];
+    }
     public void SortPlayers() => players.Sort(UnlockedSort);
 
     private int UnlockedSort(PlayerObject item_1, PlayerObject item_2)

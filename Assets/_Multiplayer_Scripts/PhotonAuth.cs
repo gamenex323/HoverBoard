@@ -117,15 +117,15 @@ public class PhotonAuth : MonoBehaviourPunCallbacks
         Debug.Log("Joined a room successfully.");
         Debug.Log("Current Room " +PhotonNetwork.CurrentRoom.Name);
 
-        //if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("SceneName", out object sceneName))
-        //{
-        //    Debug.Log($"Loading scene: {sceneName}");
-        //    PhotonNetwork.LoadLevel(sceneName.ToString());
-        //}
-        //else
-        //{
-        //    Debug.LogError("Scene name not found in room properties!");
-        //}
+        if (GameManager.Instance)
+        {
+            ExitGames.Client.Photon.Hashtable playerCustomProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "CarName", GameManager.Instance.GetSelectedPlayerName()}
+            };
+            // Set the player's custom properties
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
+        }
         if (UIManager.Instance)
             UIManager.Instance.RoomPlayerList();
     }
@@ -134,7 +134,8 @@ public class PhotonAuth : MonoBehaviourPunCallbacks
         //UIManager.instance.RoomPlayerList();
         if (PhotonNetwork.IsMasterClient)
         {
-            
+            if (UIManager.Instance)
+                UIManager.Instance.RoomPlayerList();
         }
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -142,7 +143,8 @@ public class PhotonAuth : MonoBehaviourPunCallbacks
         //UIManager.instance.RoomPlayerList();
         if (PhotonNetwork.IsMasterClient)
         {
-            
+            if (UIManager.Instance)
+                UIManager.Instance.RoomPlayerList();
         }
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -167,16 +169,31 @@ public class PhotonAuth : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log("Failed to join a random room. Creating a new room...");
-
         // Create a new room with some basic options
+        // Validate scene name and car name
+        string sceneName = ScenceName; // Ensure ScenceName is initialized
+        
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("SceneName is null or empty. Cannot create a room.");
+            return;
+        }
+
+       
+        // Room options
         RoomOptions roomOptions = new RoomOptions
         {
             MaxPlayers = 6,
             IsVisible = true,
             IsOpen = true,
-            CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "SceneName", ScenceName } },
-            CustomRoomPropertiesForLobby = new string[] { "SceneName" } // Make SceneName visible in the lobby
+            CustomRoomProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "SceneName", sceneName }
+           
+        },
+            CustomRoomPropertiesForLobby = new string[] { "SceneName" }
         };
+
         PhotonNetwork.CreateRoom(null, roomOptions, TypedLobby.Default);
     }
 

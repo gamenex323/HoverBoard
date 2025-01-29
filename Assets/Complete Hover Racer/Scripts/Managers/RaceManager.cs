@@ -42,6 +42,7 @@ public class RaceManager : MonoBehaviourPun {
 	public static event Action OnRaceOver = delegate { };
 
 	private GameObject player;
+	private List<GameObject> myPlayer = new List<GameObject>();
 	private List<DistanceTracker> aiTrackers = new List<DistanceTracker> ();
 	private int maxPos;
 	private int racePosition;
@@ -61,6 +62,7 @@ public class RaceManager : MonoBehaviourPun {
 	private bool hasLapRecord;
 
 	private DistanceTracker playerTracker;
+	private List<Transform> myPlayerBody = new List<Transform>();
 	private Transform playerBody;
 	private Transform finishLine;
 	private List<RaceGridBox> gridPlaces = new List<RaceGridBox> ();
@@ -104,40 +106,77 @@ public class RaceManager : MonoBehaviourPun {
 		gridPlaces.Sort (GridSort);
 
 		// ADD PLAYER
-		int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
-		PlayerObject po = GameManager.Instance.GetSelectedPlayer ();
-		Vector3 placePos = gridPlaces[localPlayerId - 1].transform.position + (gridPlaces[localPlayerId - 1].transform.up * GameManager.Instance.hoverHeight);
-		player = PhotonNetwork.Instantiate(po.gameplayPrefab.name, placePos, gridPlaces[localPlayerId - 1].transform.rotation);
-		playerTracker = player.GetComponent<DistanceTracker> ();
-		playerTracker.circuit = circuit;
-		playerBody = player.GetComponent<PlayerShip> ().shipBody;
+		if (PhotonNetwork.IsMasterClient)
+		{
+			for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+			{
+				if (PhotonNetwork.PlayerList[i].CustomProperties.TryGetValue("CarName", out object carName))
+				{
+					Debug.Log($"Player {PhotonNetwork.PlayerList[i].NickName} selected Car Index: {carName}");
+				
+					//int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
+					PlayerObject po = GameManager.Instance.GetSelectedPlayer(carName.ToString());
+					Vector3 placePos = gridPlaces[PhotonNetwork.PlayerList.Length - 1 - i].transform.position + (gridPlaces[PhotonNetwork.PlayerList.Length - 1 - i].transform.up * GameManager.Instance.hoverHeight);
+					player = PhotonNetwork.Instantiate(po.gameplayPrefab.name, placePos, gridPlaces[PhotonNetwork.PlayerList.Length - 1 - i].transform.rotation);
+					playerTracker = player.GetComponent<DistanceTracker>();
+					playerTracker.circuit = circuit;
+					playerBody = player.GetComponent<PlayerShip>().shipBody;
+					
+					aiTrackers.Add(playerTracker); // POSITIONFIX - we add player tracket to distance trackers list
 
-		aiTrackers.Add (playerTracker); // POSITIONFIX - we add player tracket to distance trackers list
+                   //if (PhotonNetwork.PlayerList[i] == PhotonNetwork.LocalPlayer)
+					{
+						myPlayer.Add(player);
+						myPlayerBody.Add(player.GetComponent<PlayerShip>().shipBody);
+					}
+					//else
+					//{
+					//	Debug.Log($"Player {PhotonNetwork.PlayerList[i].NickName} is NOT the local player.");
+					//}
 
-		// ADD CAMERA & JOYPAD ON MOBILE BUILD
-		raceCam = PhotonNetwork.Instantiate (cameraPrefab.name, player.transform.position, player.transform.rotation).GetComponent<RacerCamera> ();
-		raceCam.InitCamera (player.transform, playerBody);
-		if (GameManager.Instance.BuildType == Build.MOBILE) mobileControls = Instantiate (joyPad);
-
-		// ADD AI RACERS
-		gridPlaces.RemoveAt (0);
-		List<GameObject> AIs = new List<GameObject> (levelSO.AIs);
-		AIs.Sort (RandomSort);
-		int AIindex = 0;
-		for (int i = 0; i < gridPlaces.Count; i++) {
-			AIindex = (AIindex + 1) % AIs.Count;
-			Vector3 AIPos = gridPlaces[i].transform.position + (gridPlaces[i].transform.up * GameManager.Instance.hoverHeight);
-			GameObject AIply = Instantiate (AIs[AIindex], AIPos, gridPlaces[i].transform.rotation);
-			AIply.GetComponent<WaypointProgressTracker> ().circuit = circuit;
-			DistanceTracker disTr = AIply.GetComponent<DistanceTracker> ();
-			disTr.circuit = circuit;
-			aiTrackers.Add (disTr);
-			// Set AI Cheat
-			if (levelSO.cheatSpeed != 0 && levelSO.cheatDuration != 0) {
-				float variation = levelSO.cheatSpeed / gridPlaces.Count * (i + 1);
-				AIply.GetComponent<AiShip> ().Cheat_On (variation, levelSO.cheatDuration);
+                }
+				else
+				{
+					Debug.Log($"Player {PhotonNetwork.PlayerList[i].NickName} has not set a Car Index.");
+				}
 			}
 		}
+
+        // ADD CAMERA & JOYPAD ON MOBILE BUILD
+  //      for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+		//{
+		//	if (PhotonNetwork.PlayerList[i] == PhotonNetwork.LocalPlayer)
+		//	{
+		//		Debug.Log($"Player {PhotonNetwork.PlayerList[i].NickName} is the local player.");
+		//		raceCam = Instantiate(cameraPrefab, myPlayer[i].transform.position, myPlayer[i].transform.rotation).GetComponent<RacerCamera>();
+		//		raceCam.InitCamera(myPlayer[i].transform, myPlayerBody[i]);
+		//		if (GameManager.Instance.BuildType == Build.MOBILE) mobileControls = Instantiate(joyPad);
+		//	}
+		//	else
+		//	{
+		//		Debug.Log($"Player {PhotonNetwork.PlayerList[i].NickName} is NOT the local player.");
+		//	}
+
+		//}
+		// ADD AI RACERS
+		//gridPlaces.RemoveAt (0);
+		//List<GameObject> AIs = new List<GameObject> (levelSO.AIs);
+		//AIs.Sort (RandomSort);
+		//int AIindex = 0;
+		//for (int i = 0; i < gridPlaces.Count; i++) {
+		//	AIindex = (AIindex + 1) % AIs.Count;
+		//	Vector3 AIPos = gridPlaces[i].transform.position + (gridPlaces[i].transform.up * GameManager.Instance.hoverHeight);
+		//	GameObject AIply = Instantiate (AIs[AIindex], AIPos, gridPlaces[i].transform.rotation);
+		//	AIply.GetComponent<WaypointProgressTracker> ().circuit = circuit;
+		//	DistanceTracker disTr = AIply.GetComponent<DistanceTracker> ();
+		//	disTr.circuit = circuit;
+		//	aiTrackers.Add (disTr);
+		//	// Set AI Cheat
+		//	if (levelSO.cheatSpeed != 0 && levelSO.cheatDuration != 0) {
+		//		float variation = levelSO.cheatSpeed / gridPlaces.Count * (i + 1);
+		//		AIply.GetComponent<AiShip> ().Cheat_On (variation, levelSO.cheatDuration);
+		//	}
+		//}
 
 		// HUD INIT
 		ammoType.text = "";

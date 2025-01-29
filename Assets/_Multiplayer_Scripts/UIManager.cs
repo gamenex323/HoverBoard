@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviourPunCallbacks
         {
             LetStart.SetActive(false);
         }
+        
     }
     void ClearPlayerList()
     {

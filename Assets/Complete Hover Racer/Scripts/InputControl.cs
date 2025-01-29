@@ -81,8 +81,6 @@ public class InputControl : MonoBehaviourPunCallbacks
 		}
 	}
 
-
-
 	public void OnBrake(InputAction.CallbackContext value) 
 	{
 		if (photonView.IsMine)
